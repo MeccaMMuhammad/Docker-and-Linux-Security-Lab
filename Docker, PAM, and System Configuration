@@ -1,0 +1,97 @@
+Lab Tasks and Solutions:
+1. Create a Docker Container Based on nginx Image
+Task: Create and run a new Docker container based on the nginx image. Map port 80 on the host to port 80 on the container.
+
+Solution:
+
+bash
+Copy
+docker run -d -p 80:80 --name myapp nginx
+2. Bash Script to Stop the Docker Container (container-stop.sh)
+Task: Create a script to stop the myapp container and display a message when the container is stopped.
+
+Solution (container-stop.sh):
+
+bash
+Copy
+#!/bin/bash
+docker stop myapp
+echo "myapp container stopped!"
+3. Bash Script to Start the Docker Container (container-start.sh)
+Task: Create a script to start the myapp container and display a message when the container is started.
+
+Solution (container-start.sh):
+
+bash
+Copy
+#!/bin/bash
+docker start myapp
+echo "myapp container started!"
+4. PAM Configuration to Restrict su to the wheel Group
+Task: Modify the PAM configuration for the su command to allow only users in the wheel group to use it, without asking for a password.
+
+Solution:
+
+Open the /etc/pam.d/su file and uncomment the following lines:
+
+bash
+Copy
+auth           sufficient      pam_wheel.so trust use_uid
+This ensures that only users in the wheel group can use su without a password.
+
+5. Add an Extra IP to the eth1 Interface
+Task: Add an extra IP address (10.0.0.50/24) to the eth1 interface.
+
+Solution:
+
+bash
+Copy
+sudo ip addr add 10.0.0.50/24 dev eth1
+6. Create a Local DNS Entry for the Database Host
+Task: Add a local DNS entry in the /etc/hosts file for the database hostname mydb.kodekloud.com to resolve to the IP address 10.0.0.50.
+
+Solution:
+
+bash
+Copy
+sudo vi /etc/hosts
+Add the following entry:
+
+Copy
+10.0.0.50 mydb.kodekloud.com
+7. Install and Configure mariadb Database Server
+Task: Install mariadb, start the service, and enable it to start on boot.
+
+Solution:
+
+bash
+Copy
+sudo yum install mariadb-server -y
+sudo systemctl start mariadb
+sudo systemctl enable mariadb
+8. Unlock the root Account and Add It to the wheel Group
+Task: Unlock the root account and make it a member of the wheel group to allow su access without a password.
+
+Solution:
+
+bash
+Copy
+sudo passwd -u root
+sudo usermod -aG wheel root
+9. Add Cron Jobs for Starting and Stopping Containers
+Task: Create cron jobs for the root user to run container-stop.sh at 12 AM and container-start.sh at 8 AM every day.
+
+Solution:
+
+Open the crontab file for the root user:
+
+bash
+Copy
+sudo crontab -e
+Add the following lines:
+
+bash
+Copy
+0 0 * * * /home/bob/container-stop.sh
+0 8 * * * /home/bob/container-start.sh
+
